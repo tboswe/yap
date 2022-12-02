@@ -1,0 +1,19 @@
+{
+    "name":"Your Average Pigeon",
+    "description":"A simple Flask app with API for Yahoo Fantasy Leagues.",
+    "keywords":[
+       "Flask",
+       "API",
+       "Python3"
+    ],
+    "website":"https://thebeau.ca/yap.html",
+    "repository":"https://github.com/tboswe/yapapi",
+    "logo":"https://telegra.ph/file/05e4a6d070a97dd853297.png",
+    "success_url":"/code",
+    "formation":{
+       "web":{
+          "quantity":1,
+          "size":"free"
+       }
+    }
+ }

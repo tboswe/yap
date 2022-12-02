@@ -19,8 +19,12 @@ with open("creds.json", "r") as read_file:
     data = json.load(read_file)
 client_id = data['consumer_key']
 client_secret = data['consumer_secret']
+redirect_uri = "https://localhost:8000"
+redirect_http = ""
+listen_port = "8000"
+persist_key = ""
 
-def login(client_id, client_secret, redirect_uri, redirect_http, listen_port, persist_key):
+def login():
     global ACCESS_CODE
     persisted_auth_data = load("auth", default={}, ttl=-1, persist_key=persist_key)
     params = {
