@@ -3,68 +3,37 @@ import os
 import requests
 import ssl
 import webbrowser
+import json
 
 from threading import Thread
 from time import time, sleep
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs, urlencode
 from pathlib import Path
-from yapapi.util.utils import error, success
-from yapapi.util.persistence import save, load, get_persistence_filename
-
+import util
 
 ACCESS_CODE = None
 YAHOO_OAUTH_URL = "https://api.login.yahoo.com/oauth2"
 
-@click.command()
-@click.option("--client-id", default="", help="Yahoo App Client ID")
-@click.option("--client-secret", default="", help="Yahoo App Client Secret")
-@click.option("--redirect-uri", default="https://localhost:8000", help="Redirect URI")
-@click.option(
-    "--redirect-http",
-    is_flag=True,
-    help="If specified, launch the redirect URI server using regular HTTP"
-    )
-@click.option("--listen-port", default="8000", type=int, help="Port to listen on")
-@click.option("--persist-key", default="", help="Persistence Key")
-def login(
-    client_id, client_secret, redirect_uri, redirect_http, listen_port, persist_key
-):
+with open("creds.json", "r") as read_file:
+    data = json.load(read_file)
+client_id = data['consumer_key']
+client_secret = data['consumer_secret']
+
+def login(client_id, client_secret, redirect_uri, redirect_http, listen_port, persist_key):
     global ACCESS_CODE
     persisted_auth_data = load("auth", default={}, ttl=-1, persist_key=persist_key)
-    client_id = (
-        client_id
-        or os.environ.get("YAHOO_CLIENT_ID")
-        or persisted_auth_data.get("client_id")
-        or click.prompt("Yahoo Client ID")
-    )
-    client_secret = (
-        client_secret
-        or os.environ.get("YAHOO_CLIENT_SECRET")
-        or persisted_auth_data.get("client_secret")
-        or click.prompt("Yahoo Client Secret")
-    )
-
-    if not client_id or not client_secret:
-        error("Must provide client ID and client secret", exit=True)
-
     params = {
         "client_id": client_id,
         "redirect_uri": redirect_uri,
         "response_type": "code",
     }
-    ACCESS_CODE = None
     url = YAHOO_OAUTH_URL + "/request_auth?" + urlencode(params)
-    click.echo(
-        "Launching browser for Yahoo authentication. If this doesn't work use "
-        "this link manually:"
-    )
-    click.echo(url)
     webbrowser.open_new_tab(url)
-    click.echo("Launching OAuth handler server on localhost:{}".format(listen_port))
+    print("Launching OAuth handler server on localhost:{}".format(listen_port))
     server = HTTPServer(("", listen_port), Handler)
     if not redirect_http:
-        click.echo("Using localhost SSL certificate (HTTPS)")
+        print("Using localhost SSL certificate (HTTPS)")
         server.socket = ssl.wrap_socket(
             server.socket,
             server_side=True,
@@ -76,8 +45,6 @@ def login(
     server.serve_forever()
     if not ACCESS_CODE:
         error("Couldn't determine access code from URL string", exit=True)
-    click.echo("Access code: {}".format(ACCESS_CODE))
-    click.echo("Fetching access token...")
     resp = requests.post(
         YAHOO_OAUTH_URL + "/get_token",
         data={
@@ -111,8 +78,8 @@ def login(
         },
         persist_key=persist_key,
     )
-    click.echo("Access Token : {}".format(access_token))
-    click.echo("Refresh Token: {}".format(refresh_token))
+    print("Access Token : {}".format(access_token))
+    print("Refresh Token: {}".format(refresh_token))
 
 
 def shutdown_server(server):
