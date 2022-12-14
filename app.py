@@ -1,5 +1,6 @@
 from flask import Flask, redirect, jsonify
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -23,12 +24,20 @@ def get_appcreds():
         }
     return jsonify(creds)
 
-@app.route('/get_token/<redirect_uri>', methods=['GET'])
+@app.route('/get_token', methods=['GET'])
 def get_token():
-    #grant_type=authorization_code&redirect_uri=https%3A%2F%2Fwww.example.com&code=abcdef
-    #here we'll exchange the code for a token, as described on the yahoo api auth flow.  <code> will come from the auth code appended to the url on the get_authorization redirect
-    return None
+    resp = requests.post(
+        'https://api.login.yahoo.com/oauth2/' + "/get_token",
+        data={
+            "client_id": 'dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj',
+            "client_secret": '556577b5e9ece81e03edea4f5baf2b0fdfe432e7',
+            "grant_type": "authorization_code",
+            "code": requests.args.get('code'),
+            "redirect_uri": "https://thebeau.dev/yap/yap.html",
+        },
+    )
 
+    return jsonify(resp.json())
 
 #get user fantasy information
 @app.route('/getuserdata', methods=['GET'])
