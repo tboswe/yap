@@ -17,7 +17,7 @@ def get_authurl():
 def get_appcreds():
     creds = {
         'clientid': 'dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj',
-        'redirect_uri': 'https://thebeau.dev/yahp.html',
+        'redirect_uri': 'https://thebeau.dev/yap/yap.html',
         }
     return jsonify(creds)
 
