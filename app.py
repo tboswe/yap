@@ -10,7 +10,8 @@ def get_authorization():
 
 @app.route('/authurl', methods=['GET'])
 def get_authurl():
-    return jsonify({'authurl': "https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj&redirect_uri=https://thebeau.dev/yap/yap.html&response_type=code&language=en-us"})
+    authurl = {'authurl': "https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj&redirect_uri=https://thebeau.dev/yap/yap.html&response_type=code&language=en-us"}
+    return jsonify(authurl)
 
 @app.route('/get_token/<redirect_uri>', methods=['GET'])
 def get_token():
