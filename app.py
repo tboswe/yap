@@ -13,7 +13,9 @@ def get_authorization():
 
 @app.route('/authurl', methods=['GET'])
 def get_authurl():
-    authurl = {'authurl': "https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj&redirect_uri=https://thebeau.dev/yap/yap.html&response_type=code&language=en-us"}
+    authurl = {
+        'authurl': "https://api.login.yahoo.com/oauth2/request_auth?client_id=dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj&redirect_uri=https://thebeau.dev/yap/yap.html&response_type=code&language=en-us",
+        }
     return jsonify(authurl)
 
 @app.route('/appcreds', methods=['GET'])
@@ -27,7 +29,7 @@ def get_appcreds():
 @app.route('/get_token', methods=['GET'])
 def get_token():
     resp = requests.post(
-        'https://api.login.yahoo.com/oauth2/' + "/get_token",
+        'https://api.login.yahoo.com/oauth2/' + 'get_token',
         data={
             "client_id": 'dj0yJmk9bVJqTU1ob1F0WEpnJmQ9WVdrOVMwSkVia05RVEVrbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTZj',
             "client_secret": '556577b5e9ece81e03edea4f5baf2b0fdfe432e7',
@@ -38,17 +40,6 @@ def get_token():
     )
 
     return jsonify(resp.json())
-
-#get user fantasy information
-@app.route('/getuserdata', methods=['GET'])
-def get_user_data():
-    #'https://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games;game_keys=nhl/teams'
-    #get the user leagues or teams here to give him the choice to select which team he wants to use
-    #probably filter out any non fantasy nhl team for now
-    #/users;use_login=1/{sub_resource}
-    #/users;use_login=1;out={sub_resource_1},{sub_resource_2}
-    return None
-
-
+    
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000, debug=True)
