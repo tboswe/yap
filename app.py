@@ -9,7 +9,7 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 #YAHOO AUTH FLOW
-@app.route('/get_key', method=['GET'])
+@app.route('/get_key', methods=['GET'])
 def get_key():
     f = open('creds.json')
     creds = json.load(f)
