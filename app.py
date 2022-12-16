@@ -5,11 +5,11 @@ import os, time
 from rauth import OAuth2Service
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={r"/get_key": {'origins': '*'}})
 
 #YAHOO AUTH FLOW
 @app.route('/get_key', methods=['GET'])
-@cross_origin(supports_credentials=True)
+@cross_origin(origin='*', headers=['Content-Type', 'Authorization'])
 def get_key():
     f = open('creds.json')
     creds = json.load(f)
