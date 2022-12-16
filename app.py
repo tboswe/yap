@@ -14,7 +14,7 @@ def get_key():
     f = open('creds.json')
     creds = json.load(f)
     #return creds['consumer_key']
-    return redirect('https://api.login.yahoo.com/oauth2/request_auth?client_id={}&redirect_uri=https://thebeau.dev/yap/yap.html&response_type=code&language=en-us'.format(creds['consumer_key']))
+    return creds['consumer_key']
 
 @app.route('/get_token', methods=['GET'])
 def get_token():
