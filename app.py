@@ -6,7 +6,6 @@ from rauth import OAuth2Service
 
 app = Flask(__name__)
 cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 #YAHOO AUTH FLOW
 @app.route('/get_key', methods=['GET'])
