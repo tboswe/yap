@@ -82,7 +82,7 @@ class YahooAPI(object):
 
         self.key = creds['consumer_key']
         self.token = Token()
-
+        
         self.oauth = OAuth2Service(
             client_id=creds['consumer_key'],
             client_secret=creds['consumer_secret'],
@@ -94,21 +94,22 @@ class YahooAPI(object):
 
         self.session = None
 
-        self._update_token()
-
+        #self._update_token()
+        
         self.session = self.oauth.get_session(self.token.access_token)
-
+        print(self.session.access_token_key)
         self.last_request = time.time()
         self.request_period = request_period
 
-    def _update_token(self):
-        self.token.get(self.oauth)
 
-        if self.tokenfile:
-            self.token.save(self.tokenfile)
+    #def _update_token(self):
+    #    self.token.get(self.oauth)
 
-        if self.session:
-            self.session.access_token = self.token.access_token
+        #if self.tokenfile:
+            #self.token.save(self.tokenfile)
+
+        #if self.session:
+            #self.session.access_token = self.token.access_token
 
     def request(self, request_str, params={}):
         """get json instead of xml like this params={'format': 'json'}"""
@@ -125,5 +126,4 @@ class YahooAPI(object):
 
         return self.session.get(url=request_str, params=params)
 
-
-YahooAPI().__init__
+login = YahooAPI()
