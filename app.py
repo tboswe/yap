@@ -1,4 +1,4 @@
-from flask import Flask, redirect, jsonify, request, json, f
+from flask import Flask, redirect, jsonify, request, json, f, render_template
 from flask_cors import CORS, cross_origin
 
 import os, time
@@ -7,15 +7,19 @@ from rauth import OAuth2Service
 app = Flask(__name__)
 cors = CORS(app)
 
-#YAHOO AUTH FLOW
-@app.route('/get_key', methods=['GET'])
-def get_key():
-    f = open('creds.json')
-    creds = json.load(f)
-    #return creds['consumer_key']
-    return creds['consumer_key']
+@app.route("/")
+def home():
+    return render_template("home.html")
 
-@app.route('/get_token', methods=['GET'])
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/yap")
+def yap():
+    return render_template("yap")
+
+@app.route('/yahoo_auth', methods=['GET'])
 def get_token():
     #grab params
     f = open('creds.json')
